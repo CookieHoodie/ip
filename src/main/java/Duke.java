@@ -13,8 +13,8 @@ public class Duke {
         System.out.println();
 
         String command;
-        String[] inputList = new String[100];
-        int itemNum = 0;
+        Task[] taskList = new Task[100];
+        int taskNum = 0;
         while (true) {
             Scanner input = new Scanner(System.in);
             command = input.nextLine();
@@ -23,14 +23,24 @@ public class Duke {
                 break;
             }
             else if (command.equals("list")) {
-                for (int i = 0; i < itemNum; i++) {
-                    System.out.println((i+1) + ". " + inputList[i]);
+                for (int i = 0; i < taskNum; i++) {
+                    Task task = taskList[i];
+                    System.out.println((i+1) + ". " + task.getStatusIcon() + " " + task.getName());
                 }
+            }
+            else if (command.startsWith("done")) {
+                String[] tokens = command.split(" ");
+                int index = Integer.parseInt(tokens[1]) - 1;
+                Task doneTask = taskList[index];
+                doneTask.setIsDone(true);
+                System.out.println("Nice! I've marked this task as done: ");
+                System.out.println(doneTask.getStatusIcon() + " " + doneTask.getName());
             }
             else {
                 System.out.println("added: " + command);
-                inputList[itemNum] = command;
-                itemNum++;
+                Task newTask = new Task(command);
+                taskList[taskNum] = newTask;
+                taskNum++;
             }
         }
 
