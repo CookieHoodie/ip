@@ -2,12 +2,6 @@ import java.util.Scanner;
 
 public class Duke {
     public static void main(String[] args) {
-//        String logo = " ____        _        \n"
-//                + "|  _ \\ _   _| | _____ \n"
-//                + "| | | | | | | |/ / _ \\\n"
-//                + "| |_| | |_| |   <  __/\n"
-//                + "|____/ \\__,_|_|\\_\\___|\n";
-//        System.out.println("Hello from\n" + logo);
         System.out.println("Hello! I'm Duke");
         System.out.println("What can I do for you?");
         System.out.println();
@@ -30,7 +24,7 @@ public class Duke {
             }
             else if (command.startsWith("done")) {
                 String[] tokens = command.split(" ");
-                int index = Integer.parseInt(tokens[1]) - 1;
+                int index = Integer.parseInt(tokens[1]) - 1;  // -1 to convert to array index
                 Task doneTask = taskList[index];
                 doneTask.setIsDone(true);
                 System.out.println("Nice! I've marked this task as done: ");
