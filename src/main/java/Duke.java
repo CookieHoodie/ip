@@ -13,12 +13,26 @@ public class Duke {
         System.out.println();
 
         String command;
-        do {
+        String[] inputList = new String[100];
+        int itemNum = 0;
+        while (true) {
             Scanner input = new Scanner(System.in);
             command = input.nextLine();
-            System.out.println(command);
+
+            if (command.equals("bye")) {
+                break;
+            }
+            else if (command.equals("list")) {
+                for (int i = 0; i < itemNum; i++) {
+                    System.out.println((i+1) + ". " + inputList[i]);
+                }
+            }
+            else {
+                System.out.println("added: " + command);
+                inputList[itemNum] = command;
+                itemNum++;
+            }
         }
-        while (!command.equals("bye"));
 
         System.out.println("Bye. Hope to see you again soon!");
     }
