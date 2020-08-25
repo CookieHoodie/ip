@@ -18,7 +18,7 @@ public class Duke {
             } else if (command.equals("list")) {
                 for (int i = 0; i < taskNum; i++) {
                     Task task = taskList[i];
-                    System.out.println((i+1) + ". " + task.getStatusIcon() + " " + task.getName());
+                    System.out.println((i+1) + ". " + task);
                 }
             } else if (command.startsWith("done")) {
                 String[] tokens = command.split(" ");
@@ -26,7 +26,7 @@ public class Duke {
                 Task doneTask = taskList[index];
                 doneTask.setDone(true);
                 System.out.println("Nice! I've marked this task as done: ");
-                System.out.println(doneTask.getStatusIcon() + " " + doneTask.getName());
+                System.out.println(doneTask);
             } else {
                 System.out.println("added: " + command);
                 Task newTask = new Task(command);
