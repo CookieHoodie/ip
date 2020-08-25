@@ -8,7 +8,7 @@ public class Duke {
 
         String command;
         Task[] taskList = new Task[100];
-        int taskNum = 0;
+        int taskNum = 0;  // for tracking number of tasks inserted
         while (true) {
             Scanner input = new Scanner(System.in);
             command = input.nextLine();
@@ -44,11 +44,12 @@ public class Duke {
                     newTask = new Event(taskAndDate[0].strip(), taskAndDate[1].strip());
                 }
 
+                // this will call the toString method of each child class
                 System.out.println(newTask);
                 taskList[taskNum] = newTask;
                 taskNum++;
                 System.out.println("Now you have " + taskNum + " tasks in the list.");
-            } else {
+            } else {  // for commands that are not in the lists, treat them as unclassified tasks.
                 System.out.println("added: " + command);
                 Task newTask = new Task(command);
                 taskList[taskNum] = newTask;
