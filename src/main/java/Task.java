@@ -14,8 +14,7 @@ public class Task {
     public String getStatusIcon() {
         if (isDone) {
             return "[✓]";
-        }
-        else {
+        } else {
             return "[✗]";
         }
     }
@@ -28,7 +27,7 @@ public class Task {
         return isDone;
     }
 
-    public void setIsDone(boolean isDone) {
+    public void setDone(boolean isDone) {
         this.isDone = isDone;
     }
 }

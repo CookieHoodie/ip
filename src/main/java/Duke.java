@@ -15,22 +15,19 @@ public class Duke {
 
             if (command.equals("bye")) {
                 break;
-            }
-            else if (command.equals("list")) {
+            } else if (command.equals("list")) {
                 for (int i = 0; i < taskNum; i++) {
                     Task task = taskList[i];
                     System.out.println((i+1) + ". " + task.getStatusIcon() + " " + task.getName());
                 }
-            }
-            else if (command.startsWith("done")) {
+            } else if (command.startsWith("done")) {
                 String[] tokens = command.split(" ");
                 int index = Integer.parseInt(tokens[1]) - 1;  // -1 to convert to array index
                 Task doneTask = taskList[index];
-                doneTask.setIsDone(true);
+                doneTask.setDone(true);
                 System.out.println("Nice! I've marked this task as done: ");
                 System.out.println(doneTask.getStatusIcon() + " " + doneTask.getName());
-            }
-            else {
+            } else {
                 System.out.println("added: " + command);
                 Task newTask = new Task(command);
                 taskList[taskNum] = newTask;
