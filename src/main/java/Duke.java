@@ -10,7 +10,9 @@ public class Duke {
      * @param command   the user input
      * @return          true if the program should exit, false if otherwise
      */
-    private static boolean processCommand(String command) {
+    private static boolean processCommand(String command) throws DukeException {
+        command = command.strip();  // ensure commands don't get affected by extra spaces
+
         if (command.equals("bye")) {
             return true;
         } else if (command.equals("list")) {
@@ -27,31 +29,37 @@ public class Duke {
             System.out.println(doneTask);
         } else if (command.startsWith("todo") || command.startsWith("deadline")
                 || command.startsWith("event")) {
-            System.out.println("Got it. I've added this task:");
-
             String[] tokens = command.split(" ", 2);
             Task newTask = null;  // to be stored into the taskList later
+
+            if (tokens.length < 2) {  // commands without parameters
+                throw new DukeException("The description of a " + tokens[0] + " cannot be empty.");
+            }
 
             if (tokens[0].equals("todo")) {
                 newTask = new Todo(tokens[1].strip());
             } else if (tokens[0].equals("deadline")) {
                 String[] taskAndDate = tokens[1].split("/by");
+                if (taskAndDate.length < 2) {
+                    throw new DukeException("/by is not specified in the deadline.");
+                }
                 newTask = new Deadline(taskAndDate[0].strip(), taskAndDate[1].strip());
             } else if (tokens[0].equals("event")) {
                 String[] taskAndDate = tokens[1].split("/at");
+                if (taskAndDate.length < 2) {
+                    throw new DukeException("/at is not specified in the event.");
+                }
                 newTask = new Event(taskAndDate[0].strip(), taskAndDate[1].strip());
             }
 
+            System.out.println("Got it. I've added this task:");
             // this will call the toString method of each child class
             System.out.println(newTask);
             taskList[taskNum] = newTask;
             taskNum++;
             System.out.println("Now you have " + taskNum + " tasks in the list.");
-        } else {  // for commands that are not in the lists, treat them as unclassified tasks.
-            System.out.println("added: " + command);
-            Task newTask = new Task(command);
-            taskList[taskNum] = newTask;
-            taskNum++;
+        } else {  // unknown commands
+            throw new DukeException("I'm sorry, but I don't know what that means :-(");
         }
 
         return false;
@@ -63,11 +71,19 @@ public class Duke {
         System.out.println();
 
         String command;
-        do {
+        while (true) {
             Scanner input = new Scanner(System.in);
             command = input.nextLine();
 
-        } while (!processCommand(command));
+            try {
+                boolean shouldExit = processCommand(command);
+                if (shouldExit) {
+                    break;
+                }
+            } catch (DukeException de) {
+                System.out.println(de.getMessage());
+            }
+        }
 
         System.out.println("Bye. Hope to see you again soon!");
     }
