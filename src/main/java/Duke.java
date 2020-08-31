@@ -4,6 +4,13 @@ public class Duke {
     private static Task[] taskList = new Task[100];
     private static int taskNum = 0;
 
+    private static void listTasks() {
+        for (int i = 0; i < taskNum; i++) {
+            Task task = taskList[i];
+            System.out.println((i+1) + ". " + task);
+        }
+    }
+
     /**
      * Process user input and do corresponding task specified.
      *
@@ -11,15 +18,13 @@ public class Duke {
      * @return          true if the program should exit, false if otherwise
      */
     private static boolean processCommand(String command) throws DukeException {
+        boolean shouldExit = false;
         command = command.strip();  // ensure commands don't get affected by extra spaces
 
         if (command.equals("bye")) {
-            return true;
+            shouldExit = true;
         } else if (command.equals("list")) {
-            for (int i = 0; i < taskNum; i++) {
-                Task task = taskList[i];
-                System.out.println((i+1) + ". " + task);
-            }
+            listTasks();
         } else if (command.startsWith("done")) {
             String[] tokens = command.split(" ");
             int index = Integer.parseInt(tokens[1]) - 1;  // -1 to convert to array index
@@ -62,7 +67,7 @@ public class Duke {
             throw new DukeException("I'm sorry, but I don't know what that means :-(");
         }
 
-        return false;
+        return shouldExit;
     }
 
     public static void main(String[] args) {
