@@ -5,17 +5,74 @@ import duke.task.Event;
 import duke.task.Task;
 import duke.task.Todo;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import java.nio.file.Paths;
+
 public class Duke {
     private static List<Task> taskList = new ArrayList<>();
+    private static final File dukeFile = Paths.get("data", "duke.txt").toFile();
 
     private static void listTasks() {
         for (int i = 0; i < taskList.size(); i++) {
             Task task = taskList.get(i);
             System.out.println((i+1) + ". " + task);
+        }
+    }
+
+    private static void loadTasksFromFile() throws DukeException {
+        System.out.println(dukeFile.getAbsolutePath());
+        if (dukeFile.exists()) {
+            FileInputStream fin = null;
+            ObjectInputStream ois = null;
+            try {
+                fin = new FileInputStream(dukeFile);
+                ois = new ObjectInputStream(fin);
+                taskList = (ArrayList<Task>) ois.readObject();
+            } catch (IOException | ClassNotFoundException e) {
+                throw new DukeException("Failed to load tasks from file.");
+            } finally {
+                try {
+                    if (fin != null) {
+                        fin.close();
+                    }
+                    if (ois != null) {
+                        ois.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private static void storeTasksToFile() throws DukeException {
+        if (!dukeFile.exists()) {
+            dukeFile.getParentFile().mkdirs();  // create necessary parent directories
+        }
+
+        FileOutputStream fout = null;
+        ObjectOutputStream oos = null;
+        try {
+            fout = new FileOutputStream(dukeFile);
+            oos = new ObjectOutputStream(fout);
+            oos.writeObject(taskList);
+        } catch (IOException e) {
+            throw new DukeException("Failed to store tasks into file.");
+        } finally {
+            try {
+                if (fout != null) {
+                    fout.close();
+                }
+                if (oos != null) {
+                    oos.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -43,12 +100,15 @@ public class Duke {
      */
     private static boolean processCommand(String command) throws DukeException {
         boolean shouldExit = false;
+        boolean shouldSave = true;
         command = command.strip();  // ensure commands don't get affected by extra spaces
 
         if (command.equals("bye")) {
             shouldExit = true;
+            shouldSave = false;
         } else if (command.equals("list")) {
             listTasks();
+            shouldSave = false;
         } else if (command.startsWith("done")) {
             int index = getCommandIndex(command);
             markDone(index);
@@ -86,10 +146,20 @@ public class Duke {
             throw new DukeException("I'm sorry, but I don't know what that means :-(");
         }
 
+        if (shouldSave) {
+            storeTasksToFile();
+        }
+
         return shouldExit;
     }
 
     public static void main(String[] args) {
+        try {
+            loadTasksFromFile();
+        } catch (DukeException de) {
+            System.out.println(de.getMessage());
+        }
+
         System.out.println("Hello! I'm Duke");
         System.out.println("What can I do for you?");
         System.out.println();
