@@ -5,17 +5,34 @@ import duke.task.Event;
 import duke.task.Task;
 import duke.task.Todo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Duke {
-    private static Task[] taskList = new Task[100];
-    private static int taskNum = 0;
+    private static List<Task> taskList = new ArrayList<>();
 
     private static void listTasks() {
-        for (int i = 0; i < taskNum; i++) {
-            Task task = taskList[i];
+        for (int i = 0; i < taskList.size(); i++) {
+            Task task = taskList.get(i);
             System.out.println((i+1) + ". " + task);
         }
+    }
+
+    /**
+     * Get the index after commands. If the command argument is not number, exception will be thrown
+     * @param command  command along with number as the only argument
+     */
+    private static int getCommandIndex(String command) {
+        String[] tokens = command.split(" ");
+        return Integer.parseInt(tokens[1]) - 1;  // -1 to convert to array index
+    }
+
+    private static void markDone(int index) {
+        Task doneTask = taskList.get(index);
+        doneTask.setDone(true);
+        System.out.println("Nice! I've marked this task as done: ");
+        System.out.println(doneTask);
     }
 
     /**
@@ -33,12 +50,8 @@ public class Duke {
         } else if (command.equals("list")) {
             listTasks();
         } else if (command.startsWith("done")) {
-            String[] tokens = command.split(" ");
-            int index = Integer.parseInt(tokens[1]) - 1;  // -1 to convert to array index
-            Task doneTask = taskList[index];
-            doneTask.setDone(true);
-            System.out.println("Nice! I've marked this task as done: ");
-            System.out.println(doneTask);
+            int index = getCommandIndex(command);
+            markDone(index);
         } else if (command.startsWith("todo") || command.startsWith("deadline")
                 || command.startsWith("event")) {
             String[] tokens = command.split(" ", 2);
@@ -67,9 +80,8 @@ public class Duke {
             System.out.println("Got it. I've added this task:");
             // this will call the toString method of each child class
             System.out.println(newTask);
-            taskList[taskNum] = newTask;
-            taskNum++;
-            System.out.println("Now you have " + taskNum + " tasks in the list.");
+            taskList.add(newTask);
+            System.out.println("Now you have " + taskList.size() + " tasks in the list.");
         } else {  // unknown commands
             throw new DukeException("I'm sorry, but I don't know what that means :-(");
         }
