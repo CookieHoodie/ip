@@ -35,6 +35,14 @@ public class Duke {
         System.out.println(doneTask);
     }
 
+    private static void markDeleted(int index) {
+        Task deletedTask = taskList.get(index);
+        taskList.remove(index);
+        System.out.println("Noted. I've removed this task: ");
+        System.out.println(deletedTask);
+        System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+    }
+
     /**
      * Process user input and do corresponding task specified.
      *
@@ -52,6 +60,9 @@ public class Duke {
         } else if (command.startsWith("done")) {
             int index = getCommandIndex(command);
             markDone(index);
+        } else if (command.startsWith("delete")) {
+            int index = getCommandIndex(command);
+            markDeleted(index);
         } else if (command.startsWith("todo") || command.startsWith("deadline")
                 || command.startsWith("event")) {
             String[] tokens = command.split(" ", 2);
