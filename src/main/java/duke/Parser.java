@@ -50,7 +50,9 @@ public class Parser {
     private static String[] getTaskDetails(String taskStr, String separator) throws DukeException {
         String[] tokens = taskStr.split(separator, 2);
         if (tokens.length < 2) {
-            throw new DukeException(separator + "must be specified in this command!");
+            throw new DukeException(separator + " must be specified in this command!");
+        } else if (tokens[0].isBlank() || tokens[1].isBlank()) {
+            throw new DukeException("Invalid task name or date.");
         }
 
         return tokens;
