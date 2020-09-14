@@ -44,11 +44,22 @@ public class Ui {
         System.out.println(task);
     }
 
+
+    /**
+     * Show results after finding tasks with the keyword specified.
+     *
+     * @param tasks filtered tasks that contain the keyword
+     */
     public void showFoundTasks(List<Task> tasks) {
         System.out.println("Here are the matching tasks in your list:");
         listTasks(tasks);
     }
 
+    /**
+     * List out the tasks given with corresponding indices
+     *
+     * @param tasks tasks to be printed to the screen
+     */
     public void listTasks(List<Task> tasks) {
         for (int i = 0; i < tasks.size(); i++) {
             Task task = tasks.get(i);
