@@ -25,7 +25,8 @@ public class Parser {
             return new DeadlineCommand(details[0], details[1]);
         }
 
-        throw new DukeException("Invalid Command");
+        // invalid command
+        throw new DukeException("I'm sorry, but I don't know what that means :-(");
     }
 
     private static int getIndex(String userInput) throws DukeException {
