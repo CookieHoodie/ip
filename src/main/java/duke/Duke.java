@@ -5,24 +5,14 @@ import duke.task.Event;
 import duke.task.Task;
 import duke.task.Todo;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
-import java.nio.file.Paths;
-
 public class Duke {
-    private static List<Task> taskList = new ArrayList<>();
+    private static TaskList tasks = null;
     private static final File dukeFile = Paths.get("data", "duke.txt").toFile();
     private static Storage storage = new Storage(dukeFile);
-
-    private static void listTasks() {
-        for (int i = 0; i < taskList.size(); i++) {
-            Task task = taskList.get(i);
-            System.out.println((i+1) + ". " + task);
-        }
-    }
 
     /**
      * Get the index after commands. If the command argument is not number, exception will be thrown
@@ -34,18 +24,16 @@ public class Duke {
     }
 
     private static void markDone(int index) {
-        Task doneTask = taskList.get(index);
-        doneTask.setDone(true);
+        Task doneTask = tasks.markDone(index);
         System.out.println("Nice! I've marked this task as done: ");
         System.out.println(doneTask);
     }
 
     private static void markDeleted(int index) {
-        Task deletedTask = taskList.get(index);
-        taskList.remove(index);
+        Task deletedTask = tasks.delete(index);
         System.out.println("Noted. I've removed this task: ");
         System.out.println(deletedTask);
-        System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
     }
 
     /**
@@ -63,7 +51,7 @@ public class Duke {
             shouldExit = true;
             shouldSave = false;
         } else if (command.equals("list")) {
-            listTasks();
+            tasks.list();
             shouldSave = false;
         } else if (command.startsWith("done")) {
             int index = getCommandIndex(command);
@@ -99,14 +87,14 @@ public class Duke {
             System.out.println("Got it. I've added this task:");
             // this will call the toString method of each child class
             System.out.println(newTask);
-            taskList.add(newTask);
-            System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+            tasks.add(newTask);
+            System.out.println("Now you have " + tasks.size() + " tasks in the list.");
         } else {  // unknown commands
             throw new DukeException("I'm sorry, but I don't know what that means :-(");
         }
 
         if (shouldSave) {
-            storage.storeTasks(taskList);
+            storage.storeTasks(tasks.getTasks());
         }
 
         return shouldExit;
@@ -114,9 +102,10 @@ public class Duke {
 
     public static void main(String[] args) {
         try {
-            taskList = storage.loadTasks();
+            tasks = new TaskList(storage.loadTasks());
         } catch (DukeException de) {
             System.out.println(de.getMessage());
+            tasks = new TaskList();
         }
 
         System.out.println("Hello! I'm Duke");
