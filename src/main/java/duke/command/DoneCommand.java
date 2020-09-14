@@ -17,7 +17,6 @@ public class DoneCommand extends Command {
     public void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException {
         Task doneTask = tasks.markDone(index);
         ui.showTaskDone(doneTask);
-        ui.readCommand();
     }
 
     @Override

@@ -21,7 +21,6 @@ public class EventCommand extends Command {
         tasks.add(event);
         storage.storeTasks(tasks.getTasks());
         ui.showTaskAdded(tasks, event);
-        ui.readCommand();
     }
 
     @Override

@@ -21,7 +21,6 @@ public class DeadlineCommand extends Command {
         tasks.add(dl);
         storage.storeTasks(tasks.getTasks());
         ui.showTaskAdded(tasks, dl);
-        ui.readCommand();
     }
 
     @Override

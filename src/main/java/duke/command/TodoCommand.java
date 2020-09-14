@@ -19,7 +19,6 @@ public class TodoCommand extends Command {
         tasks.add(task);
         storage.storeTasks(tasks.getTasks());
         ui.showTaskAdded(tasks, task);
-        ui.readCommand();
     }
 
     @Override
