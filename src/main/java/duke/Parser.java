@@ -13,6 +13,8 @@ public class Parser {
             return new DoneCommand(getIndex(userInput));
         } else if (userInput.startsWith("delete")) {
             return new DeleteCommand(getIndex(userInput));
+        } else if (userInput.startsWith("find")) {
+            return new FindCommand(getTaskStr(userInput));
         } else if (userInput.startsWith("todo")) {
             return new TodoCommand(getTaskStr(userInput));
         } else if (userInput.startsWith("event")) {

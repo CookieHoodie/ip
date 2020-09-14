@@ -44,6 +44,11 @@ public class Ui {
         System.out.println(task);
     }
 
+    public void showFoundTasks(List<Task> tasks) {
+        System.out.println("Here are the matching tasks in your list:");
+        listTasks(tasks);
+    }
+
     public void listTasks(List<Task> tasks) {
         for (int i = 0; i < tasks.size(); i++) {
             Task task = tasks.get(i);
