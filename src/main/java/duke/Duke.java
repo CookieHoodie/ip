@@ -23,13 +23,13 @@ public class Duke {
         return Integer.parseInt(tokens[1]) - 1;  // -1 to convert to array index
     }
 
-    private static void markDone(int index) {
+    private static void markDone(int index) throws DukeException {
         Task doneTask = tasks.markDone(index);
         System.out.println("Nice! I've marked this task as done: ");
         System.out.println(doneTask);
     }
 
-    private static void markDeleted(int index) {
+    private static void markDeleted(int index) throws DukeException {
         Task deletedTask = tasks.delete(index);
         System.out.println("Noted. I've removed this task: ");
         System.out.println(deletedTask);
