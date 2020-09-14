@@ -14,8 +14,10 @@ public class Storage {
     }
 
     public List<Task> loadTasks() throws DukeException {
-        ArrayList<Task> tasks = null;
-        if (dukeFile.exists()) {
+        ArrayList<Task> tasks;
+        if (!dukeFile.exists()) {
+            tasks = new ArrayList<>();  // to avoid null pointer exception
+        } else {
             FileInputStream fin = null;
             ObjectInputStream ois = null;
             try {
