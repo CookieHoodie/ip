@@ -15,6 +15,10 @@ public class Ui {
         System.out.println(de.getMessage());
     }
 
+    public void showDivider() {
+        System.out.println("----------------------------------");
+    }
+
     public String readCommand() {
         System.out.print("Command: ");
         Scanner input = new Scanner(System.in);
