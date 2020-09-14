@@ -16,13 +16,6 @@ public class TaskList {
         this.tasks = tasks;
     }
 
-    public void list() {
-        for (int i = 0; i < tasks.size(); i++) {
-            Task task = tasks.get(i);
-            System.out.println((i+1) + ". " + task);
-        }
-    }
-
     public void add(Task task) {
         tasks.add(task);
     }
@@ -44,7 +37,17 @@ public class TaskList {
         } catch (IndexOutOfBoundsException e) {
             throw new DukeException("Please provide a valid index!");
         }
+    }
 
+    public List<Task> find(String keyword) {
+        List<Task> matchedTasks = new ArrayList<>();
+        for (Task t : tasks) {
+            if (t.getName().contains(keyword)) {
+                matchedTasks.add(t);
+            }
+        }
+
+        return matchedTasks;
     }
 
     public int size() {

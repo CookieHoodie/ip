@@ -2,6 +2,7 @@ package duke;
 
 import duke.task.Task;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Ui {
@@ -41,6 +42,13 @@ public class Ui {
     public void showTaskDone(Task task) {
         System.out.println("Nice! I've marked this task as done: ");
         System.out.println(task);
+    }
+
+    public void listTasks(List<Task> tasks) {
+        for (int i = 0; i < tasks.size(); i++) {
+            Task task = tasks.get(i);
+            System.out.println((i+1) + ". " + task);
+        }
     }
 
     public void showExit() {
