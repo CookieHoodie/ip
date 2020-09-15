@@ -5,11 +5,19 @@ import duke.command.Command;
 import java.io.File;
 import java.nio.file.Paths;
 
+/**
+ * Duke program.
+ */
 public class Duke {
     private TaskList tasks;
     private Storage storage;
     private Ui ui;
 
+    /**
+     * Instantiate different components of the program (interface, storage, and tasks).
+     *
+     * @param dukeFile file to load the task data from
+     */
     public Duke(File dukeFile) {
         ui = new Ui();
         storage = new Storage(dukeFile);
@@ -17,10 +25,13 @@ public class Duke {
             tasks = new TaskList(storage.loadTasks());
         } catch (DukeException de) {
             ui.showError(de);
-            tasks = new TaskList();
+            tasks = new TaskList();  // initialize to new list if no data exists yet
         }
     }
 
+    /**
+     * Method that runs the program.
+     */
     public void run() {
         ui.showWelcome();
         boolean shouldExit = false;
@@ -33,13 +44,13 @@ public class Duke {
             } catch (DukeException de) {
                 ui.showError(de);
             } finally {
-                ui.showDivider();
+                ui.showDivider();  // for better ui experience
             }
         }
     }
 
     public static void main(String[] args) {
         File dukeFile = Paths.get("data", "duke.txt").toFile();
-        new Duke(dukeFile).run();
+        new Duke(dukeFile).run();  // initiate and run the duke program.
     }
 }
