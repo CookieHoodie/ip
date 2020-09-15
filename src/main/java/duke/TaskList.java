@@ -30,18 +30,6 @@ public class TaskList {
         this.tasks = tasks;
     }
 
-    public void list() {
-        for (int i = 0; i < tasks.size(); i++) {
-            Task task = tasks.get(i);
-            System.out.println((i+1) + ". " + task);
-        }
-    }
-
-    /**
-     * Add task to the list.
-     *
-     * @param task task to be added to the list
-     */
     public void add(Task task) {
         tasks.add(task);
     }
@@ -77,7 +65,23 @@ public class TaskList {
         } catch (IndexOutOfBoundsException e) {
             throw new DukeException("Please provide a valid index!");
         }
+    }
 
+    /**
+     * Find tasks that contain the keyword.
+     *
+     * @param keyword keyword to search in the task names
+     * @return a list of tasks that contain the keyword
+     */
+    public List<Task> find(String keyword) {
+        List<Task> matchedTasks = new ArrayList<>();
+        for (Task t : tasks) {
+            if (t.getName().contains(keyword)) {
+                matchedTasks.add(t);
+            }
+        }
+
+        return matchedTasks;
     }
 
     /**
